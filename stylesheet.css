@@ -1,0 +1,29 @@
+body {
+    background-color: rgb(242, 246, 189);
+  }
+  h1 {
+    color: rgb(89, 186, 255);
+  }
+  p {
+    color: red;
+  }
+
+.button-1 {
+  background-color: #4CAF50; 
+  border: none;              
+  color: white;              
+  padding: 12px 24px;        
+  text-align: center;        
+  text-decoration: none;     
+  display: inline-block;     
+  font-size: 16px;           
+  margin: 10px 5px;          
+  border-radius: 5px;        
+  
+}
+
+.button-1:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+

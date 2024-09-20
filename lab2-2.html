@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- Linking external stylesheet -->
+    <link rel="stylesheet" href="./stylesheet.css">
+<head>
+    <!-- Meta information about the page -->
+    <meta charset="UTF-8"/>
+    <meta name="description" content="Data Visualisation"/>
+    <meta name="keywords" content="HTML, CSS, D3"/>
+    <meta name="author" content="Zhen Yu"/>
+
+    <!-- Title of the web page -->
+    <title>Task 2.2 D3 Drawing with Data - Bar Chart</title>
+
+    <!-- Including D3.js library -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+    <!-- Navigation buttons -->
+    <button class="button-1" onclick="window.location.href='index.html'">Home</button>
+	<button class="button-1" onclick="window.location.href='lab2-1.html'">Lab 2.1</button>
+	<button class="button-1" onclick="window.location.href='lab2-2.html'">Lab 2.2</button>
+	<button class="button-1" onclick="window.location.href='lab2-3.html'">Lab 2.3</button>
+    <button class="button-1" onclick="window.location.href='lab2-4.html'">Lab 2.4</button>
+
+    <!-- Main heading -->
+    <h1>Drawing with Data</h1>
+
+    <script>
+        // Setting up dimensions of the SVG canvas
+        var w = 500;  // Width of the SVG
+        var h = 100;  // Height of the SVG
+        var barPadding = 3;  // Space between each bar
+
+        // Dataset representing bar heights
+        var dataset = [14, 5, 26, 23, 9];
+
+        // Creating the SVG container and setting its dimensions and fill color
+        var svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", w)  // Width of SVG
+                    .attr("height", h)  // Height of SVG
+                    .attr("fill", "rgb(106,90,205)");  // Fill color (set for later use)
+
+        // Selecting all "rect" (bars), binding data, and entering the dataset
+        svg.selectAll("rect")
+           .data(dataset)
+           .enter()  // Creates a new placeholder for each dataset value
+           .append("rect")  // Append "rect" elements (bars)
+           
+           // Setting the x-position of each bar based on index
+           .attr("x", function(d, i) {
+               return i * (w / dataset.length);  // Spacing bars evenly
+           })
+           
+           // Setting the y-position (height) based on data value
+           .attr("y", function(d) {
+               return h - (d * 4);  // Subtracting to position bars from bottom
+           })
+           
+           // Setting width of each bar, accounting for bar padding
+           .attr("width", function(d) {
+               return (w / dataset.length - barPadding);  // Width of each bar
+           })
+           
+           // Setting height of each bar based on data value
+           .attr("height", function(d) {
+               return d * 4;  // Scale height (multiplied for visibility)
+           });
+    </script>
+</body>
+
+<!-- Footer section -->
+<footer style="color:grey;">
+    COS30045 Data Visualisation <br> Tai Zhen Yu    
+</footer>
+</html>
