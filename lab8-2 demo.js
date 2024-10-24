@@ -7,7 +7,6 @@ function init() {
                         .translate([w / 3, h / 2])
                         .scale(2450);
 
-    // Set up the path
     var path = d3.geoPath()
                 .projection(projection);
 
@@ -19,16 +18,25 @@ function init() {
                 .attr("width", w)
                 .attr("height", h);
 
-    // Reading the data from CSV file
+    // Create a div for the tooltip
+    var tooltip = d3.select("body").append("div")
+                    .attr("class", "tooltip")
+                    .style("opacity", 0)
+                    .style("position", "absolute")
+                    .style("background-color", "white")
+                    .style("border", "solid")
+                    .style("border-width", "1px")
+                    .style("border-radius", "5px")
+                    .style("padding", "5px");
+
     d3.csv("VIC_LGA_unemployment.csv").then(function(data) {
         color.domain([
             d3.min(data, function(d) { return +d.unemployed; }),
             d3.max(data, function(d) { return +d.unemployed; })
         ]);
-
+    
         d3.json("https://raw.githubusercontent.com/Yu0012/cos30045lab/refs/heads/main/LGA_VIC.json").then(function(json) {
 
-            // Merge the ag. data and GeoJSON
             for (var i = 0; i < data.length; i++) {
                 var dataLGA = data[i].LGA;
                 var dataValue = parseFloat(data[i].unemployed);
@@ -55,17 +63,6 @@ function init() {
 
             // Load in cities data
             d3.csv("VIC_city.csv").then(function(data) {
-
-                // Tooltip div (hidden initially)
-                var tooltip = d3.select("body")
-                    .append("div")
-                    .attr("class", "tooltip")
-                    .style("position", "absolute")
-                    .style("background-color", "white")
-                    .style("border", "solid 1px black")
-                    .style("padding", "5px")
-                    .style("display", "none");
-
                 svg.selectAll("circle")
                     .data(data)
                     .enter()
@@ -80,21 +77,30 @@ function init() {
                     .style("stroke", "#000")
                     .style("stroke-width", 0.5)
                     .style("fill", "red")
-                    // Mouse event listeners
                     .on("mouseover", function(event, d) {
-                        tooltip.style("display", "block")
-                            .text(d.city);
+                        // Log the data object to inspect its structure
+                        console.log(d);
+
+                        // Show tooltip, check if the city column is correctly named
+                        tooltip.transition()
+                            .duration(200)
+                            .style("opacity", 0.9);
+                        tooltip.html("City: " + d.city)  // Adjust 'd.city' to match your CSV file column
+                            .style("left", (event.pageX + 10) + "px")
+                            .style("top", (event.pageY - 20) + "px");
                     })
                     .on("mousemove", function(event) {
                         tooltip.style("left", (event.pageX + 10) + "px")
-                            .style("top", (event.pageY - 10) + "px");
+                               .style("top", (event.pageY - 20) + "px");
                     })
                     .on("mouseout", function() {
-                        tooltip.style("display", "none");
+                        tooltip.transition()
+                            .duration(500)
+                            .style("opacity", 0);
                     });
             });
         });
     });
 }
 
-window.onload = init;
+window.onload = init;
